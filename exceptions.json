@@ -1,0 +1,10 @@
+{
+    "exceptions":
+    [
+        "/home/user/Virtual Box/",
+        "Thumbs.db",
+        ".ova",
+        ".directory",
+        ".iso"
+    ]
+}

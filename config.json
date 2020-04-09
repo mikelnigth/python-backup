@@ -1,0 +1,11 @@
+{
+    "configuration": [
+        {
+            "source": "/home/user/",
+            "destination": "/media/user/external_HDD/",
+            "database": "/home/user/backup/data_base.json",
+            "database_template": "/home/user/backup/data_base-template.json",
+            "exceptions": "/home/user/backup/exceptions.json"
+        }
+    ]
+}

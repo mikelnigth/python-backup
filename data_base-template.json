@@ -1,0 +1,46 @@
+{
+  "information": [
+    {
+      "Host": "",
+      "Files": "",
+      "Size": ""
+    }
+  ],
+  "bot_info": [
+    {
+      "general": [
+        {
+          "backup": "",
+          "initial_run_s ": "",
+          "finished_run_s": "",
+          "finished_run_i": ""
+        }
+      ],
+      "full": [
+        {
+          "backup": "",
+          "initial_run_s ": "",
+          "finished_run_s": "",
+          "finished_run_i": ""
+        }
+      ],
+      "inc": [
+        {
+          "backup": "",
+          "initial_run_s ": "",
+          "finished_run_s": "",
+          "finished_run_i": ""
+        }
+      ],
+      "diff": [
+        {
+          "backup": "",
+          "initial_run_s ": "",
+          "finished_run_s": "",
+          "finished_run_i": ""
+        }
+      ]
+    }
+  ],
+  "files": []
+}
