@@ -5,6 +5,7 @@
             "destination": "/media/user/external_HDD/",
             "database": "/home/user/backup/data_base.json",
             "database_template": "/home/user/backup/data_base-template.json",
+            "logs": "/media/user/external_HDD/backup.log",
             "exceptions": "/home/user/backup/exceptions.json"
         }
     ]

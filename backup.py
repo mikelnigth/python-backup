@@ -1,6 +1,6 @@
 #
-#	Autor: Miquel Servera
-#   Descripcion:	The script must be executed with the function as paramether:
+#	Author: Miquel Servera
+#   Description:	The script must be executed with the function as paramether:
 #						- full	Full			copy all the files
 #						- inc	Incremental		copy new and modified files since last full backup
 #						- diff	Differential	copy new and modified files since last backup
@@ -19,6 +19,11 @@ import shutil
 import json
 import zipfile
 import tarfile
+#
+#   ----- Useful Functions -----
+def list_list(lista):
+	for i in lista:
+		print(i)
 #
 #   ----- Other Functions -----
 def check_terminal():							# Check the paramthers introduced via terminal
@@ -49,6 +54,7 @@ def check_configuration():										# Check files necessaries in the script fold
 		database_path = config['configuration'][0]['database']
 		database_template_path = config['configuration'][0]['database_template']
 		exceptions_list_path = config['configuration'][0]['exceptions']
+		logs_path = config['configuration'][0]['logs']
 	# Folder Source
 	if (os.path.exists(source_path) == False):
 		print("[ERROR] Source folder not exist")
@@ -60,6 +66,9 @@ def check_configuration():										# Check files necessaries in the script fold
 	# File Database
 	if (os.path.exists(database_path) == False):
 		print("[WARNING] Database file not exist, will be created a new one in full option")
+	# Logs file
+	if (os.path.exists(logs_path) == False):
+		print("[WARNING] Logs file not exist, will be created a new one in inc or diff option")
 	# File Database template
 	if (os.path.exists(database_template_path) == False):
 		print("[ERROR] Database template file not exist")
@@ -71,7 +80,7 @@ def check_configuration():										# Check files necessaries in the script fold
 	if (errors != 0):
 		exit()
 	else:
-		return source_path,destination_path,database_path,database_template_path,exceptions_list_path
+		return source_path,destination_path,database_path,database_template_path,exceptions_list_path,logs_path
 #
 def check_item(element):
 	n = 2
@@ -125,6 +134,25 @@ def write_database(database):
 	# write Database
 	with open(database_path, 'w') as database_output:
 		json.dump(database, database_output, indent=2)
+	return
+#
+def write_logs(list_files_new,list_files_modified):
+	logs = open(logs_path,'a+')
+	logs.write("                              \n")
+	logs.write("                              \n")
+	logs.write("                              \n")
+	logs.write("------------------------------\n")
+	logs.write(str(datetime.datetime.now().strftime("%Y-%m-%d   %H:%M\n")))
+	logs.write("------------------------------\n")
+	logs.write("------- List new files -------\n")
+	logs.write("Files: " + str(len(list_files_new)) + "\n")
+	for i in list_files_new:
+		logs.write(i + "\n")
+	logs.write("------------------------------\n")
+	logs.write("----- List modified files -----\n")
+	logs.write("Files: " + str(len(list_files_modified)) + "\n")
+	for i in list_files_modified:
+		logs.write(i + "\n")
 	return
 #
 def insert_database(database,backup_list):
@@ -203,10 +231,10 @@ def option_inc_diff():		# Backup new and modified files
 		# File is not in the backup, then is new
 		if (is_new == True):
 			list_files_new.append(index_all)
-	print("----- Lista new files -----")
+	print("----- List new files -----")
 	insert_database(database,list_files_new)
 	list_list(list_files_new)
-	print("----- Lista updated files -----")
+	print("----- List updated files -----")
 	list_list(list_files_modified)
 	# Merge list_files_new and list_files_modified to one
 	backup_list = []
@@ -217,13 +245,14 @@ def option_inc_diff():		# Backup new and modified files
 	if len(backup_list) != 0:
 		do_backup(backup_list)
 		write_database(database)
+		write_logs(list_files_new,list_files_modified)
 	return
 #
 #   ----- Main Function -----
 #
 if __name__ == "__main__":
 	function = check_terminal()
-	source_path,destination_path,database_path,database_template_path,exceptions_list_path = check_configuration()
+	source_path,destination_path,database_path,database_template_path,exceptions_list_path,logs_path = check_configuration()
 	host = socket.gethostname()
 	date = datetime.date.today()
 	initial_time = str(datetime.datetime.now().strftime("%Y-%m-%d   %H:%M"))
@@ -244,3 +273,10 @@ if __name__ == "__main__":
 	if (function == "inc") or (function == "diff"):
 		option_inc_diff()
 	exit()
+
+
+
+
+#	print(time.strftime("%Y%m%d%H%M", time.localtime(os.path.getmtime(i))))
+#print(os.path.abspath(__file__))
+#print(os.path.dirname(os.path.abspath(__file__)))
